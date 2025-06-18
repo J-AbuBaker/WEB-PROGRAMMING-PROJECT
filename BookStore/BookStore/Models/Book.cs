@@ -16,6 +16,8 @@ namespace BookStore.Models
         public string ISBN { get; set; }
         public DateTime PublishDate { get; set; }
         public string Genre { get; set; }
+       [DataType(DataType.MultilineText)] 
+       public string Description { get; set; }
     }
 }
 
