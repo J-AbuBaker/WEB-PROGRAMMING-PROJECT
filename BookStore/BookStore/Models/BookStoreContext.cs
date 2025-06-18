@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using BookStore.Models;
 
-namespace BookStore.Models
+namespace Product_app.Models
 {
     public class BookStoreContext : DbContext
     {
@@ -19,49 +19,42 @@ namespace BookStore.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            // Composite key for many-to-many Favorite table
             modelBuilder.Entity<Favorite>()
                 .HasKey(f => new { f.UserID, f.BookID });
 
-            // Configure Favorite → User relationship (Restrict to avoid multiple cascade paths)
             modelBuilder.Entity<Favorite>()
                 .HasOne(f => f.User)
                 .WithMany(u => u.Favorites)
                 .HasForeignKey(f => f.UserID)
-                .OnDelete(DeleteBehavior.Restrict); // Fixes cascade conflict
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure Favorite → Book relationship
             modelBuilder.Entity<Favorite>()
                 .HasOne(f => f.Book)
                 .WithMany(b => b.Favorites)
                 .HasForeignKey(f => f.BookID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Configure Book → User relationship
             modelBuilder.Entity<Book>()
                 .HasOne<User>()
                 .WithMany()
                 .HasForeignKey(b => b.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Configure precision for decimal price
             modelBuilder.Entity<Book>()
                 .Property(b => b.Price)
                 .HasPrecision(10, 2);
 
-            // Seed Users
             modelBuilder.Entity<User>().HasData(
-                new User { UserID = 1, Username = "admin", Password = "admin123" },
-                new User { UserID = 2, Username = "alice", Password = "alicepwd" },
-                new User { UserID = 3, Username = "bob", Password = "bob123" },
-                new User { UserID = 4, Username = "charlie", Password = "charlie123" },
-                new User { UserID = 5, Username = "diana", Password = "diana123" },
-                new User { UserID = 6, Username = "eve", Password = "evepass" },
-                new User { UserID = 7, Username = "frank", Password = "frankpass" },
-                new User { UserID = 8, Username = "grace", Password = "gracepass" }
+                new User { UserID = 1, Username = "admin", Password = "admin123", Role = "Admin", IsAdmin = true },
+                new User { UserID = 2, Username = "alice", Password = "alicepwd", Role = "User", IsAdmin = false },
+                new User { UserID = 3, Username = "bob", Password = "bob123", Role = "User", IsAdmin = false },
+                new User { UserID = 4, Username = "charlie", Password = "charlie123", Role = "User", IsAdmin = false },
+                new User { UserID = 5, Username = "diana", Password = "diana123", Role = "User", IsAdmin = false },
+                new User { UserID = 6, Username = "eve", Password = "evepass", Role = "User", IsAdmin = false },
+                new User { UserID = 7, Username = "frank", Password = "frankpass", Role = "User", IsAdmin = false },
+                new User { UserID = 8, Username = "grace", Password = "gracepass", Role = "User", IsAdmin = false }
             );
 
-            // Seed Books (all must include UserID)
             modelBuilder.Entity<Book>().HasData(
                 new Book { BookID = 1, Title = "Clean Code", Author = "Robert C. Martin", Price = 45.00m, ISBN = "978-0132350884", PublishDate = new DateTime(2008, 8, 1), Genre = "Software Engineering", Description = "A Handbook of Agile Software Craftsmanship", CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/I/41jEbK-jG+L.jpg", StockQuantity = 10, Rating = 4.8f, IsFeatured = true, UserID = 3 },
                 new Book { BookID = 2, Title = "The Pragmatic Programmer", Author = "Andrew Hunt, David Thomas", Price = 50.00m, ISBN = "978-0201616224", PublishDate = new DateTime(1999, 10, 20), Genre = "Programming", Description = "Your Journey to Mastery", CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/I/51a3ZQK9sQL.SX404_BO1,204,203,200.jpg", StockQuantity = 12, Rating = 4.7f, IsFeatured = false, UserID = 7 },
@@ -80,8 +73,6 @@ namespace BookStore.Models
                 new Book { BookID = 15, Title = "The C++ Programming Language", Author = "Bjarne Stroustrup", Price = 66.00m, ISBN = "978-0321958327", PublishDate = new DateTime(2013, 5, 19), Genre = "Programming", Description = "Definitive guide to C++ by its creator", CoverImageUrl = "https://images.thenile.io/r1000/9780321958327.jpg", StockQuantity = 10, Rating = 4.7f, IsFeatured = false, UserID = 4 }
             );
 
-
-            // Seed Favorites
             modelBuilder.Entity<Favorite>().HasData(
                 new Favorite { UserID = 1, BookID = 1 },
                 new Favorite { UserID = 1, BookID = 2 },
