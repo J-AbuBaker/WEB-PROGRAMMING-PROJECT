@@ -20,7 +20,17 @@ namespace BookStore.Controllers
             ViewBag.Users = context.Users.ToList();
             return View(books);
         }
+        
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var book = context.Books
+                .Include(b => b.Favorites)
+                .FirstOrDefault(b => b.BookID == id);
 
+            if (book == null) return NotFound();
+            return View(book);
+        }
     }
 }
 
