@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Product_app.Models;
+using BookStore.Models;
 
-namespace Product_app.Controllers
+namespace BookStore.Controllers
 {
     public class BookController : Controller
     {
