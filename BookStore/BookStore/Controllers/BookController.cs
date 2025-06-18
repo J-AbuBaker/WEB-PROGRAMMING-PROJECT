@@ -131,7 +131,22 @@ namespace BookStore.Controllers
             return RedirectToAction("List");
         }
 
+        [HttpPost]
+        public IActionResult RemoveFromFavorites(int bookId)
+        {
+            var userIDString = HttpContext.Session.GetString("UserID");
+            if (!int.TryParse(userIDString, out int userID))
+                return Unauthorized();
 
+            var favorite = context.Favorites.FirstOrDefault(f => f.UserID == userID && f.BookID == bookId);
+            if (favorite != null)
+            {
+                context.Favorites.Remove(favorite);
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("List");
+        }
     }
 }
 
