@@ -77,6 +77,27 @@ namespace BookStore.Controllers
         
         [HttpGet]
         public IActionResult Add() => View();
+
+        [HttpPost]
+        public IActionResult Add(Book book)
+        {
+            var userIDString = HttpContext.Session.GetString("UserID");
+            if (!int.TryParse(userIDString, out int userID))
+                return BadRequest("User ID missing or invalid.");
+
+            book.UserID = userID;
+            book.CreatedAt = DateTime.UtcNow;
+            book.UpdatedAt = DateTime.UtcNow;
+
+            if (ModelState.IsValid)
+            {
+                context.Books.Add(book);
+                context.SaveChanges();
+                return RedirectToAction("List");
+            }
+            return View(book);
+        }
+
     }
 }
 
