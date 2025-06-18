@@ -22,6 +22,7 @@ namespace BookStore.Models
        public int StockQuantity { get; set; }  
        public float Rating { get; set; }  
        public bool IsFeatured { get; set; }
+      public DateTime CreatedAt { get; set; } = DateTime.UtcNow;      
     }
 }
 
