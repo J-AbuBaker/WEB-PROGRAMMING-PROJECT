@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace BookStore.Models
+namespace Product_app.Models
 {
     public class User
     {
@@ -13,10 +13,16 @@ namespace BookStore.Models
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
-        // Navigation properties
-        public List<Favorite> Favorites { get; set; } = new List<Favorite>();
+        private string _role = "User";
+        public string Role
+        {
+            get => _role;
+            set => _role = string.IsNullOrEmpty(value) ? "User" : value;
+        }
 
-        // ADD THIS: Navigation property for books authored by this user
+        public bool IsAdmin { get; set; } = false;
+
+        public List<Favorite> Favorites { get; set; } = new List<Favorite>();
         public List<Book> Books { get; set; } = new List<Book>();
     }
 }
