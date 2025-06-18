@@ -26,7 +26,9 @@ namespace BookStore.Models
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 // Required foreign key for Author
         public int UserID { get; set; }
-        
+    // Optional navigation property
+        public User? User { get; set; }
+    
 
     }
 }
