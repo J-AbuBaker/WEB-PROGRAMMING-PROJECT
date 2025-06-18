@@ -18,6 +18,7 @@ namespace BookStore.Models
         public string Genre { get; set; }
        [DataType(DataType.MultilineText)] 
        public string Description { get; set; }
+       public string CoverImageUrl { get; set; }
     }
 }
 
