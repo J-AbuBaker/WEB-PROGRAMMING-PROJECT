@@ -13,6 +13,14 @@ namespace BookStore.Controllers
             context = ctx;
         }
 
+        [HttpGet]
+        public IActionResult List()
+        {
+            var books = context.Books.Include(b => b.Favorites).ToList();
+            ViewBag.Users = context.Users.ToList();
+            return View(books);
+        }
+
     }
 }
 
