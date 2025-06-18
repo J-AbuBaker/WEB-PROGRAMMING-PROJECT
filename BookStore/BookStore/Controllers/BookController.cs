@@ -59,6 +59,14 @@ namespace BookStore.Controllers
 
             return View(book);
         }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var book = context.Books.Find(id);
+            if (book == null) return NotFound();
+            return View(book);
+        }
     }
 }
 
