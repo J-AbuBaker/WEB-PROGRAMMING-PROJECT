@@ -74,6 +74,9 @@ namespace BookStore.Controllers
             context.SaveChanges();
             return RedirectToAction("List");
         }
+        
+        [HttpGet]
+        public IActionResult Add() => View();
     }
 }
 
