@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Product_app.Models
+namespace BookStore.Models
 {
     public class User
     {
