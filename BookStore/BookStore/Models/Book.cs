@@ -28,7 +28,7 @@ namespace BookStore.Models
         public int UserID { get; set; }
     // Optional navigation property
         public User? User { get; set; }
-    
+        public List<Favorite> Favorites { get; set; } = new();
 
     }
 }
