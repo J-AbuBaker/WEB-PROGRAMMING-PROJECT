@@ -113,6 +113,25 @@ namespace BookStore.Controllers
             return View("List", books.ToList());
         }
 
+        [HttpPost]
+        public IActionResult AddToFavorites(int bookId)
+        {
+            var userIDString = HttpContext.Session.GetString("UserID");
+            if (!int.TryParse(userIDString, out int userID))
+                return Unauthorized();
+
+            var alreadyFavorite = context.Favorites.Any(f => f.UserID == userID && f.BookID == bookId);
+            if (!alreadyFavorite)
+            {
+                var favorite = new Favorite { UserID = userID, BookID = bookId };
+                context.Favorites.Add(favorite);
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("List");
+        }
+
+
     }
 }
 
