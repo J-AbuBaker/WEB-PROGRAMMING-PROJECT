@@ -98,6 +98,21 @@ namespace BookStore.Controllers
             return View(book);
         }
 
+        [HttpGet]
+        public IActionResult Search(string title, string author)
+        {
+            var books = context.Books.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(title))
+                books = books.Where(b => b.Title.Contains(title));
+
+            if (!string.IsNullOrWhiteSpace(author))
+                books = books.Where(b => b.Author.Contains(author));
+
+            ViewBag.Users = context.Users.ToList();
+            return View("List", books.ToList());
+        }
+
     }
 }
 
