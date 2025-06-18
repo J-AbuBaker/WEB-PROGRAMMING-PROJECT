@@ -31,6 +31,14 @@ namespace BookStore.Controllers
             if (book == null) return NotFound();
             return View(book);
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var book = context.Books.Find(id);
+            if (book == null) return NotFound();
+            return View(book);
+        }
     }
 }
 
