@@ -8,19 +8,31 @@ namespace BookStore.Controllers
     {
         private readonly BookStoreContext context;
 
-        public BookController(BookStoreContext ctx)
+
+        public BookController(BookStoreContext _context)
         {
-            context = ctx;
+            context = _context;
         }
 
-        [HttpGet]
         public IActionResult List()
         {
-            var books = context.Books.Include(b => b.Favorites).ToList();
-            ViewBag.Users = context.Users.ToList();
-            return View(books);
+            bool isAdmin = HttpContext.Session.GetString("IsAdmin") == "True";
+            var books = context.Books.ToList();
+            var users = context.Users.ToList();
+            ViewBag.Users = users;
+
+            if (isAdmin)
+            {
+                ViewBag.AllBooks = books;
+                return View("AdminList", books);
+            }
+            else
+            {
+                return View("UserList", books);
+            }
         }
-        
+
+
         [HttpGet]
         public IActionResult Details(int id)
         {
@@ -48,7 +60,7 @@ namespace BookStore.Controllers
                 var existingBook = context.Books.AsNoTracking().FirstOrDefault(b => b.BookID == book.BookID);
                 if (existingBook == null) return NotFound();
 
-                book.UserID = existingBook.UserID; // Preserve UserID!
+                book.UserID = existingBook.UserID;
                 book.CreatedAt = existingBook.CreatedAt;
                 book.UpdatedAt = DateTime.UtcNow;
 
@@ -60,6 +72,7 @@ namespace BookStore.Controllers
             return View(book);
         }
 
+
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -67,6 +80,7 @@ namespace BookStore.Controllers
             if (book == null) return NotFound();
             return View(book);
         }
+
         [HttpPost]
         public IActionResult Delete(Book book)
         {
@@ -74,7 +88,7 @@ namespace BookStore.Controllers
             context.SaveChanges();
             return RedirectToAction("List");
         }
-        
+
         [HttpGet]
         public IActionResult Add() => View();
 
@@ -113,6 +127,7 @@ namespace BookStore.Controllers
             return View("List", books.ToList());
         }
 
+
         [HttpPost]
         public IActionResult AddToFavorites(int bookId)
         {
@@ -147,6 +162,6 @@ namespace BookStore.Controllers
 
             return RedirectToAction("List");
         }
+
     }
 }
-

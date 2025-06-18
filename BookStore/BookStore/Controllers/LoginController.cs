@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using BookStore.Sessions;
-using BookStore.Models;
 
 namespace BookStore.Controllers
 {
@@ -14,19 +12,23 @@ namespace BookStore.Controllers
             _userService = userService;
         }
 
+        // GET: /Login
         [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
-        [HttpPost] // Login logic
+        [HttpPost]
         public IActionResult Index(string username, string password)
         {
             var user = _userService.Login(username, password);
+
             if (user != null)
             {
                 HttpContext.Session.SetString("UserID", user.UserID.ToString());
+                HttpContext.Session.SetString("IsAdmin", user.IsAdmin ? "True" : "False");
+
                 return RedirectToAction("List", "Book");
             }
 
@@ -42,4 +44,3 @@ namespace BookStore.Controllers
         }
     }
 }
-

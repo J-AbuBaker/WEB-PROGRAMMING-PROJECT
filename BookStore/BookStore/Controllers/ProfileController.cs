@@ -14,7 +14,6 @@ namespace BookStore.Controllers
             context = ctx;
         }
 
-        // GET: /Profile/Index
         public IActionResult Index()
         {
             var userIdString = HttpContext.Session.GetString("UserID");

@@ -37,7 +37,6 @@ namespace BookStore.Controllers
         {
             return View();
         }
-        
         [HttpPost]
         public IActionResult ChangePassword(ChangePasswordViewModel model)
         {
@@ -66,7 +65,5 @@ namespace BookStore.Controllers
             TempData["StatusMessage"] = "Password updated successfully.";
             return RedirectToAction("ChangePassword");
         }
-
     }
 }
-
