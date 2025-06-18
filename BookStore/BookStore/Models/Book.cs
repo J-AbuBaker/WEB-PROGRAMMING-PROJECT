@@ -12,6 +12,8 @@ namespace BookStore.Models
         public string Title { get; set; }
           [Required, Range(0.01, 1000)]
         public decimal Price { get; set; }
+        [Required, RegularExpression(@"\d{3}-\d{10}", ErrorMessage = "Invalid ISBN format")]
+        public string ISBN { get; set; }
 
     }
 }
