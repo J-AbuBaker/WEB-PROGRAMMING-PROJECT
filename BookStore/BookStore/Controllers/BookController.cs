@@ -67,6 +67,13 @@ namespace BookStore.Controllers
             if (book == null) return NotFound();
             return View(book);
         }
+        [HttpPost]
+        public IActionResult Delete(Book book)
+        {
+            context.Books.Remove(book);
+            context.SaveChanges();
+            return RedirectToAction("List");
+        }
     }
 }
 
