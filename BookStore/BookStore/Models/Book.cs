@@ -14,7 +14,7 @@ namespace BookStore.Models
         public decimal Price { get; set; }
         [Required, RegularExpression(@"\d{3}-\d{10}", ErrorMessage = "Invalid ISBN format")]
         public string ISBN { get; set; }
-
+        public DateTime PublishDate { get; set; }
     }
 }
 
