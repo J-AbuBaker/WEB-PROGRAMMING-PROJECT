@@ -20,7 +20,8 @@ namespace BookStore.Models
        public string Description { get; set; }
        public string CoverImageUrl { get; set; }
        public int StockQuantity { get; set; }  
-       public float Rating { get; set; }     
+       public float Rating { get; set; }  
+       public bool IsFeatured { get; set; }
     }
 }
 
