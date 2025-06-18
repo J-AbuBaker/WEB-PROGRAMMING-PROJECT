@@ -24,6 +24,10 @@ namespace BookStore.Models
        public bool IsFeatured { get; set; }
       public DateTime CreatedAt { get; set; } = DateTime.UtcNow;  
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+// Required foreign key for Author
+        public int UserID { get; set; }
+        
+
     }
 }
 
