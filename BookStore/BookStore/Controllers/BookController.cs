@@ -39,6 +39,26 @@ namespace BookStore.Controllers
             if (book == null) return NotFound();
             return View(book);
         }
+
+        [HttpPost]
+        public IActionResult Edit(Book book)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingBook = context.Books.AsNoTracking().FirstOrDefault(b => b.BookID == book.BookID);
+                if (existingBook == null) return NotFound();
+
+                book.UserID = existingBook.UserID; // Preserve UserID!
+                book.CreatedAt = existingBook.CreatedAt;
+                book.UpdatedAt = DateTime.UtcNow;
+
+                context.Books.Update(book);
+                context.SaveChanges();
+                return RedirectToAction("List");
+            }
+
+            return View(book);
+        }
     }
 }
 
