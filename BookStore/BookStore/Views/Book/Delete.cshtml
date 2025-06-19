@@ -1,0 +1,28 @@
+@model BookStore.Models.Book
+
+@{
+    ViewData["Title"] = "Delete Book";
+}
+
+<h2>Confirm Deletion</h2>
+
+<p>Are you sure you want to delete this book?</p>
+
+<h3 class="text-danger">@Model.Title</h3>
+
+@if (!string.IsNullOrEmpty(Model.CoverImageUrl))
+{
+    <img src="@Model.CoverImageUrl" alt="Book Cover" class="img-thumbnail mb-3" style="max-width: 200px;" />
+}
+
+<p><strong>Author:</strong> @Model.Author</p>
+<p><strong>ISBN:</strong> @Model.ISBN</p>
+<p><strong>Price:</strong> @Model.Price.ToString("C")</p>
+<p><strong>Published:</strong> @Model.PublishDate.ToShortDateString()</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="BookID" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="List" class="btn btn-outline-dark">Cancel</a>
+</form>
+

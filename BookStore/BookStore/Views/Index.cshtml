@@ -1,0 +1,33 @@
+@model BookStore.Models.User
+@using BookStore.Models
+@{
+    ViewData["Title"] = "User Profile";
+
+    List<Book> books = ViewBag.Books as List<Book>;
+}
+
+<h1 class="mb-4">Profile Details</h1>
+
+<div class="mb-3">
+    <strong>Username:</strong> @Model.Username
+</div>
+
+<h5>Published Books:</h5>
+
+@if (books != null && books.Any())
+{
+<ul class="list-group">
+    @foreach (var book in books)
+        {
+    <li class="list-group-item">
+        <a asp-controller="Book" asp-action="Details" asp-route-id="@book.BookID">
+            @book.Title
+        </a>
+    </li>
+        }
+</ul>
+}
+else
+{
+<p class="text-muted">This user has not published any books.</p>
+}

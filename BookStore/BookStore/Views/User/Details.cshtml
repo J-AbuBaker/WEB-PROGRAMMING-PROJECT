@@ -1,0 +1,42 @@
+@model BookStore.Models.User
+@using BookStore.Models
+
+@{
+    ViewData["Title"] = "User Details";
+
+    var userIDString = Context.Session.GetString("UserID");
+    int.TryParse(userIDString, out int userID);
+
+    List<Book> favoriteBooks = ViewBag.FavoriteBooks as List<Book>;
+}
+
+<div class="d-flex align-items-center mb-4">
+    <h2 class="me-3">Username: @Model.Username</h2>
+
+    @if (userID == Model.UserID)
+    {
+    <a asp-action="ChangePassword" asp-controller="User" class="btn btn-primary">Change Password</a>
+    }
+</div>
+
+<h4 class="mb-3">Favorited Books</h4>
+
+@if (favoriteBooks != null && favoriteBooks.Any())
+{
+<ul class="list-group">
+    @foreach (var book in favoriteBooks)
+        {
+    <li class="list-group-item">
+        <strong>Title:</strong> @book.Title<br />
+        <strong>Author:</strong> @book.Author<br />
+        <strong>Price:</strong> @book.Price.ToString("C2")<br />
+        <strong>Published:</strong> @book.PublishDate.ToShortDateString()
+    </li>
+        }
+</ul>
+}
+else
+{
+<p class="text-muted">This user has not favorited any books yet.</p>
+}
+
