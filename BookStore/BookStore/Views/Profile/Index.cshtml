@@ -1,0 +1,47 @@
+@model BookStore.Models.User
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<h2 class="mb-4">Username: @Model.Username</h2>
+
+<a asp-controller="Account" asp-action="ChangePassword" class="btn btn-primary mb-4">Change Password</a>
+
+<h4>Favorited Books</h4>
+
+@if (Model.Favorites == null || !Model.Favorites.Any())
+{
+    <p class="text-muted">This user has not favorited any books yet.</p>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        @foreach (var favorite in Model.Favorites)
+        {
+            var book = favorite.Book;
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    @if (!string.IsNullOrWhiteSpace(book.CoverImageUrl))
+                    {
+                        <img src="@book.CoverImageUrl" class="card-img-top" alt="@book.Title" style="height: 300px; object-fit: cover;" />
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                        <p class="card-text">
+                            <strong>Author:</strong> @book.Author<br />
+                            <strong>Genre:</strong> @book.Genre<br />
+                            <strong>Price:</strong> @book.Price.ToString("C")<br />
+                            <strong>Rating:</strong> @book.Rating
+                        </p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <a asp-controller="Book" asp-action="Details" asp-route-id="@book.BookID" class="btn btn-sm btn-info">Details</a>
+                        <a asp-controller="Book" asp-action="Edit" asp-route-id="@book.BookID" class="btn btn-sm btn-secondary">Edit</a>
+                        <a asp-controller="Book" asp-action="Delete" asp-route-id="@book.BookID" class="btn btn-sm btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
